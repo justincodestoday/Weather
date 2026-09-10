@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { Searchbar } from "./components/Searchbar";
+import { SearchHistory } from "./components/SearchHistory";
+import { ThemeToggle } from "./components/ThemeToggle";
 import { WeatherCard } from "./components/WeatherCard";
 import { isValidCountryCode, normaliseCountryCode } from "./utils/country";
 import { cn } from "./utils/cn";
@@ -57,6 +59,10 @@ function App() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-4 px-4 py-6">
+      <header className="flex items-center justify-end">
+        <ThemeToggle />
+      </header>
+
       <div className={cn("flex flex-1 flex-col gap-28 sm:gap-24", !weather && "justify-center")}>
         <div>
           <Searchbar
