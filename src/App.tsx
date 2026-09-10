@@ -3,9 +3,10 @@ import { Searchbar } from "./components/Searchbar";
 import { SearchHistory } from "./components/SearchHistory";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { WeatherCard } from "./components/WeatherCard";
+import { useSearchHistory } from "./hooks/useSearchHistory";
 import { isValidCountryCode, normaliseCountryCode } from "./utils/country";
 import { cn } from "./utils/cn";
-import type { WeatherDataResponse } from "./types/weather";
+import type { HistoryEntry, WeatherDataResponse } from "./types/weather";
 import { fetchCurrentWeather } from "./api/openweather";
 
 function App() {
@@ -17,11 +18,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { history, addEntry, removeEntry } = useSearchHistory();
+
   const abortRef = useRef<AbortController | null>(null);
 
-  const handleSubmit = async () => {
-    const cityValue = city.trim();
-    const countryCodeValue = normaliseCountryCode(country);
+  const handleSubmit = async (cityInput: string = city, countryInput: string = country) => {
+    const cityValue = cityInput.trim();
+    const countryCodeValue = normaliseCountryCode(countryInput);
 
     if (!cityValue) {
       setError("Please enter a city name.");
@@ -45,6 +48,7 @@ function App() {
       const data = await fetchCurrentWeather(cityValue, countryCodeValue, controller.signal);
       console.log("API response:", data);
       setWeather(data);
+      addEntry({ city: data.name, countryCode: data.sys.country });
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") return;
 
@@ -55,6 +59,18 @@ function App() {
     } finally {
       if (abortRef.current === controller) setIsLoading(false);
     }
+  };
+
+  const handleHistorySearch = (entry: HistoryEntry) => {
+    setCity(entry.city);
+    setCountry(entry.countryCode);
+    handleSubmit(entry.city, entry.countryCode);
+  };
+
+  const handleClear = () => {
+    setCity("");
+    setCountry("");
+    setError(null);
   };
 
   return (
@@ -71,6 +87,7 @@ function App() {
             onCityChange={setCity}
             onCountryChange={(value) => setCountry(normaliseCountryCode(value))}
             onSubmit={handleSubmit}
+            onClear={handleClear}
             isLoading={isLoading}
           />
           {error && (
@@ -83,6 +100,12 @@ function App() {
         {weather && (
           <main className="border-card-border bg-card rounded-3xl border p-5 backdrop-blur-[20px] sm:p-8">
             <WeatherCard weather={weather} isLoading={isLoading} />
+            <SearchHistory
+              entries={history}
+              onSearch={handleHistorySearch}
+              onDelete={removeEntry}
+              disabled={isLoading}
+            />
           </main>
         )}
       </div>

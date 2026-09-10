@@ -13,8 +13,8 @@ export interface WeatherDataResponse {
 }
 
 export interface HistoryEntry {
-  id: string;
+  id?: string;
   city: string;
   countryCode: string;
-  searchedAt: number;
+  searchedAt?: number;
 }
