@@ -12,7 +12,7 @@ export function WeatherCard({ weather, isLoading }: WeatherCardProps) {
     return (
       <div className="text-muted px-2 py-8 text-center">
         <h1 className="m-0 text-base">Today's Weather</h1>
-        <p className="mt-2">Look up the weather in any city in the world.</p>
+        <p className="text-muted mt-2 text-sm">Look up the weather in any city in the world.</p>
       </div>
     );
   }

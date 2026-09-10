@@ -27,7 +27,7 @@ export function SearchHistoryItem({ entry, onSearch, onDelete, disabled }: Searc
         aria-label={`Search ${place} again`}
         className={cn(
           "border-input-border bg-input text-heading grid h-9 w-9 shrink-0 place-items-center",
-          "rounded-full border transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50",
+          "rounded-full border transition hover:brightness-50 disabled:cursor-not-allowed disabled:opacity-50",
         )}
       >
         <SearchIcon className="h-4 w-4" />
@@ -39,8 +39,8 @@ export function SearchHistoryItem({ entry, onSearch, onDelete, disabled }: Searc
         disabled={disabled}
         aria-label={`Remove ${place} from history`}
         className={cn(
-          "border-input-border bg-input text-heading grid h-9 w-9 shrink-0 place-items-center",
-          "rounded-full border transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50",
+          "border-input-border bg-red text-heading grid h-9 w-9 shrink-0 place-items-center",
+          "rounded-full border transition hover:brightness-50 disabled:cursor-not-allowed disabled:opacity-50",
         )}
       >
         <TrashIcon className="h-4 w-4" />

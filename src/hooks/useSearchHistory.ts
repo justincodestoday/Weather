@@ -31,8 +31,8 @@ export function useSearchHistory() {
     }
   }, [history]);
 
-  const addEntry = useCallback((entry: HistoryEntry) => {
-    const newEntry = {
+  const addEntry = useCallback((entry: NewEntry) => {
+    const newEntry: HistoryEntry = {
       id: crypto.randomUUID(),
       city: entry.city,
       countryCode: entry.countryCode,

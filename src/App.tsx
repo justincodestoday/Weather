@@ -79,7 +79,12 @@ function App() {
         <ThemeToggle />
       </header>
 
-      <div className={cn("flex flex-1 flex-col gap-28 sm:gap-24", !weather && "justify-center")}>
+      <div
+        className={cn(
+          "flex flex-1 flex-col gap-28 sm:gap-24",
+          history.length === 0 && "justify-center",
+        )}
+      >
         <div>
           <Searchbar
             city={city}
@@ -97,7 +102,7 @@ function App() {
           )}
         </div>
 
-        {weather && (
+        {history.length > 0 && (
           <main className="border-card-border bg-card rounded-3xl border p-5 backdrop-blur-[20px] sm:p-8">
             <WeatherCard weather={weather} isLoading={isLoading} />
             <SearchHistory
