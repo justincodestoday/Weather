@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { Searchbar } from "./components/Searchbar";
 import { isValidCountryCode } from "./utils/countries";
 
-const normaliseCountry = (value: string) => {
-  return value
+const normaliseCountry = (country: string) => {
+  return country
     .toUpperCase()
     .replace(/[^A-Z]/g, "")
     .slice(0, 2);
@@ -20,9 +20,9 @@ function App() {
 
   const abortRef = useRef<AbortController | null>(null);
 
-  const handleSubmit = async (cityInput: string, countryInput: string) => {
-    const cityValue = cityInput.trim();
-    const countryCodeValue = normaliseCountry(countryInput);
+  const handleSubmit = async () => {
+    const cityValue = city.trim();
+    const countryCodeValue = normaliseCountry(country);
 
     if (!cityValue) {
       setError("Please enter a city name.");
@@ -57,6 +57,22 @@ function App() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-4 px-4 py-6">
+      <div>
+        <Searchbar
+          city={city}
+          country={country}
+          onCityChange={setCity}
+          onCountryChange={(value) => setCountry(normaliseCountry(value))}
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+        />
+        {error && (
+          <p role="alert" className="mt-2 px-1 text-sm text-red-500">
+            {error}
+          </p>
+        )}
+      </div>
+
       <footer className="text-muted mt-auto pt-4 text-center text-xs">
         Weather data from OpenWeather
       </footer>
