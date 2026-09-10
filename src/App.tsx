@@ -1,19 +1,16 @@
 import { useRef, useState } from "react";
 import { Searchbar } from "./components/Searchbar";
-import { isValidCountryCode } from "./utils/countries";
-
-const normaliseCountry = (country: string) => {
-  return country
-    .toUpperCase()
-    .replace(/[^A-Z]/g, "")
-    .slice(0, 2);
-};
+import { WeatherCard } from "./components/WeatherCard";
+import { isValidCountryCode, normaliseCountryCode } from "./utils/country";
+import { cn } from "./utils/cn";
+import type { WeatherDataResponse } from "./types/weather";
+import { fetchCurrentWeather } from "./api/openweather";
 
 function App() {
-  const apiKey = import.meta.env.VITE_OPENWEATHER_KEY;
-
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
+
+  const [weather, setWeather] = useState<WeatherDataResponse | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +19,7 @@ function App() {
 
   const handleSubmit = async () => {
     const cityValue = city.trim();
-    const countryCodeValue = normaliseCountry(country);
+    const countryCodeValue = normaliseCountryCode(country);
 
     if (!cityValue) {
       setError("Please enter a city name.");
@@ -43,13 +40,16 @@ function App() {
     setIsLoading(true);
 
     try {
-      const data = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q='${cityValue}, ${countryCodeValue}'&appid=${apiKey}&units=metric`,
-      );
+      const data = await fetchCurrentWeather(cityValue, countryCodeValue, controller.signal);
       console.log("API response:", data);
+      setWeather(data);
     } catch (err) {
-      setError("Error fetching data");
-      console.error("Error fetching data");
+      if (err instanceof DOMException && err.name === "AbortError") return;
+
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(message);
+      console.error(err);
     } finally {
       if (abortRef.current === controller) setIsLoading(false);
     }
