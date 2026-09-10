@@ -251,8 +251,15 @@ const ISO_3166_1_ALPHA_2 = [
   "ZW",
 ];
 
+export const normaliseCountryCode = (countryCode: string): string => {
+  return countryCode
+    .toUpperCase()
+    .replace(/[^A-Z]/g, "")
+    .slice(0, 2);
+};
+
 export const ISO_COUNTRY_CODES: ReadonlySet<string> = new Set(ISO_3166_1_ALPHA_2);
 
-export const isValidCountryCode = (code: string) => {
-  return ISO_COUNTRY_CODES.has(code);
+export const isValidCountryCode = (countryCode: string) => {
+  return ISO_COUNTRY_CODES.has(countryCode);
 };
