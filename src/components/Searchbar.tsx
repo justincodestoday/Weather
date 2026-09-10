@@ -1,5 +1,5 @@
 import { cn } from "../utils/cn";
-import { SearchIcon, SpinnerIcon } from "./icons";
+import { SearchIcon, SpinnerIcon, XIcon } from "./icons";
 
 interface SearchbarProps {
   city: string;
@@ -7,6 +7,7 @@ interface SearchbarProps {
   onCityChange: (value: string) => void;
   onCountryChange: (value: string) => void;
   onSubmit: () => void;
+  onClear: () => void;
   isLoading: boolean;
 }
 
@@ -16,6 +17,7 @@ export function Searchbar({
   onCityChange,
   onCountryChange,
   onSubmit,
+  onClear,
   isLoading,
 }: SearchbarProps) {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -91,17 +93,35 @@ export function Searchbar({
         </span>
       </div>
 
-      <button
-        type="submit"
-        disabled={isLoading}
-        aria-label="Search"
-        className={cn(
-          "bg-accent grid h-14 w-full place-items-center rounded-2xl text-white transition",
-          "hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-70 sm:w-14",
+      <div className="flex gap-3">
+        {(city || country) && (
+          <button
+            type="button"
+            onClick={onClear}
+            disabled={isLoading}
+            aria-label="Clear search"
+            className={cn(
+              "border-input-border bg-input grid h-14 flex-1 place-items-center text-white sm:w-14",
+              "hover:text-heading rounded-2xl border transition",
+              "disabled:cursor-not-allowed disabled:opacity-60",
+            )}
+          >
+            <XIcon className="h-8 w-8" />
+          </button>
         )}
-      >
-        {isLoading ? <SpinnerIcon className="h-8 w-8" /> : <SearchIcon className="h-8 w-8" />}
-      </button>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          aria-label="Search"
+          className={cn(
+            "bg-accent grid h-14 flex-1 place-items-center rounded-2xl text-white transition",
+            "hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-70 sm:w-14 sm:flex-none",
+          )}
+        >
+          {isLoading ? <SpinnerIcon className="h-8 w-8" /> : <SearchIcon className="h-8 w-8" />}
+        </button>
+      </div>
     </form>
   );
 }
