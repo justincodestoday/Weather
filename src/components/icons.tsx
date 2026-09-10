@@ -1,3 +1,6 @@
+import cloudIcon from "../assets/cloud.png";
+import sunIcon from "../assets/sun.png";
+
 type IconProps = { className?: string };
 
 export function SearchIcon({ className }: IconProps) {
@@ -69,5 +72,17 @@ export function SpinnerIcon({ className }: { className?: string }) {
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
       <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
     </svg>
+  );
+}
+
+interface WeatherIconProps {
+  condition: string;
+  label: string;
+  className?: string;
+}
+
+export function WeatherIcon({ condition, label, className }: WeatherIconProps) {
+  return (
+    <img src={condition === "Clear" ? sunIcon : cloudIcon} alt={label} className={className} />
   );
 }
