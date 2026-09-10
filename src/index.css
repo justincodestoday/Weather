@@ -43,10 +43,10 @@
 
   --label: rgba(255, 255, 255, 0.6);
   --muted: rgba(255, 255, 255, 0.6);
-  --input: rgba(255, 255, 255, 0.2);
-  --input-border: rgba(255, 255, 255, 0.5);
-  --card: rgba(255, 255, 255, 0.2);
-  --card-border: rgba(255, 255, 255, 0.5);
+  --input: rgba(28, 20, 55, 0.68);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --card: rgba(40, 28, 75, 0.55);
+  --card-border: rgba(255, 255, 255, 0.12);
 
   --text: #ffffff;
   --text-h: #ffffff;
