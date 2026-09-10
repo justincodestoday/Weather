@@ -57,23 +57,31 @@ function App() {
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-4 px-4 py-6">
-      <div>
-        <Searchbar
-          city={city}
-          country={country}
-          onCityChange={setCity}
-          onCountryChange={(value) => setCountry(normaliseCountry(value))}
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
-        {error && (
-          <p role="alert" className="mt-2 px-1 text-sm text-red-500">
-            {error}
-          </p>
+      <div className={cn("flex flex-1 flex-col gap-28 sm:gap-24", !weather && "justify-center")}>
+        <div>
+          <Searchbar
+            city={city}
+            country={country}
+            onCityChange={setCity}
+            onCountryChange={(value) => setCountry(normaliseCountryCode(value))}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
+          {error && (
+            <p role="alert" className="mt-2 px-1 text-sm text-red-500">
+              {error}
+            </p>
+          )}
+        </div>
+
+        {weather && (
+          <main className="border-card-border bg-card rounded-3xl border p-5 backdrop-blur-[20px] sm:p-8">
+            <WeatherCard weather={weather} isLoading={isLoading} />
+          </main>
         )}
       </div>
 
-      <footer className="text-muted mt-auto pt-4 text-center text-xs">
+      <footer className="text-muted mt-auto text-center text-xs">
         Weather data from OpenWeather
       </footer>
     </div>
